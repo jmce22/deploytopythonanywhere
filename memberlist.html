@@ -1,0 +1,306 @@
+<html>
+    <head>
+        <title> view members</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+       
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <style>
+            input[type=text], input[type=number], select {
+                width: 20%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                display: inline-block;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;
+            }
+
+            input[type=submit] {
+                width: 10%;
+                background-color: #4CAF50;
+                color: white;
+                padding: 14px 20px;
+                margin: 8px 0;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+    
+            input[type=submit]:hover {
+                background-color: #4CAF50;
+            }
+            
+    
+            div.form-container {
+                width: 20%;
+                border-radius: 5px;
+                background-color: #f2f2f2;
+                padding: 20px;
+            }
+        </style>
+
+    </head>
+    <body>
+        <h1>Gym members</h1>
+        <div> <button id="showCreateButton" onclick="showCreate()">Create</button>
+              <button id="showUpdateButton" onclick="showUpdate()">Update</button>
+              <button id="showDeleteButton" onclick="doDelete(this)">Delete</button>
+        <div>
+            <table class="table" id="memberTable">
+                <tr>
+                        <th>id</th>
+                        <th>Name</th>
+                        <th>Sex</th>
+                        <th>Age</th>
+                        <th>Height</th>
+                        <th>Weight</th>
+                        <th></th>
+                        <th></th>
+                </tr>
+                
+            </table>
+        </div>
+        <div id='createUpdateForm' style="display: none">
+                <h2 style="background-color:DodgerBlue;"><span id="createLabel">Create a</span> <span id="updateLabel">Update a</span> member</h2>
+                <input type="hidden" name="id"/>
+                Name <input type="text" name="name"/> <br/>
+                Sex <input type="text" name="sex"/> <br/>
+                Age <input type="number" name="age"/> <br/>
+                Height <input type="number" name="height" step="0.1"/> <br/>
+                Weight <input type="number" name="weight" step="0.1"/> <br/>
+                <button id="doCreateButton" onclick="doCreate(this)">Create</button>
+                <button id="doUpdateButton" onclick="doUpdate(this)">Update</button>
+                <button id="showDeleteButton" onclick="doDelete(this)">Delete</button>
+        </div>
+    </body>
+    <script>
+    function showCreate(){
+        document.getElementById('showCreateButton').style.display="none"
+        document.getElementById('memberTable').style.display="none"
+        document.getElementById('createUpdateForm').style.display="block"
+
+        document.getElementById('createLabel').style.display="inline"
+        document.getElementById('updateLabel').style.display="none"
+
+        document.getElementById('doCreateButton').style.display="block"
+        document.getElementById('doUpdateButton').style.display="none"
+    }
+
+    function showViewAll(){
+        document.getElementById('showCreateButton').style.display="block"
+        document.getElementById('memberTable').style.display="block"
+        document.getElementById('createUpdateForm').style.display="none"
+    }
+
+    function showUpdate(buttonElement){
+        document.getElementById('showCreateButton').style.display="none"
+        document.getElementById('memberTable').style.display="none"
+        document.getElementById('createUpdateForm').style.display="block"
+
+        document.getElementById('createLabel').style.display="none"
+        document.getElementById('updateLabel').style.display="inline"
+
+        document.getElementById('doCreateButton').style.display="none"
+        document.getElementById('doUpdateButton').style.display="block"
+
+
+        var rowElement = buttonElement.closest('tr');
+        
+        var member = getMemberFromRow(rowElement)
+        populateFormWithMember(member)
+    }
+
+    function doCreate(){
+        var form = document.getElementById('createUpdateForm')
+
+        var member = {}
+       
+        member.name = form.querySelector('input[name="name"]').value
+        member.sex = form.querySelector('input[name="sex"]').value
+        member.age = form.querySelector('input[name="age"]').value
+        member.height = form.querySelector('input[name="height"]').value
+        member.weight = form.querySelector('input[name="weight"]').value
+        console.log(JSON.stringify(member))
+        createMemberAjax(member);
+    }
+
+    function doUpdate(){
+        var mmeber = getBookFromForm();
+        var rowElement = document.getElementById(member.id);
+        updateMemberAjax(member);
+        setMemberInRow(rowElement, member);
+       
+        clearForm();
+        showViewAll();
+    }
+
+    function doDelete(r){
+        var tableElement = document.getElementById('memberTable');
+        var rowElement = r.parentNode.parentNode;
+        var index = rowElement.rowIndex;
+        deleteMemberAjax(rowElement.getAttribute("id"));
+        tableElement.deleteRow(index);
+    }
+
+    function addMemberToTable(member){
+        var tableElement = document.getElementById('memberTable');
+        var rowElement = tableElement.insertRow(-1);
+        rowElement.setAttribute('id',member.id);
+        var cell1 = rowElement.insertCell(0);
+        cell1.innerHTML = member.id;
+        var cell2 = rowElement.insertCell(1);
+        cell2.innerHTML = member.name;
+        var cell3 = rowElement.insertCell(2);
+        cell3.innerHTML = member.sex;
+        var cell4 = rowElement.insertCell(3);
+        cell4.innerHTML = member.age;
+        var cell5 = rowElement.insertCell(4);
+        cell5.innerHTML = member.height;
+        var cell6 = rowElement.insertCell(5);
+        cell6.innerHTML = member.weight;
+        var cell7 = rowElement.insertCell(6);
+        cell7.innerHTML = '<button onclick="showUpdate(this)">Update</button>';
+        var cell8 = rowElement.insertCell(7);
+        cell8.innerHTML = '<button onclick="doDelete(this)">delete</button>';
+    }
+
+    function clearForm(){
+        var form = document.getElementById('createUpdateForm')
+
+        form.querySelector('input[name="name"]').value=''
+        form.querySelector('input[name="sex"]').value=''
+        form.querySelector('input[name="age"]').value=''
+        form.querySelector('input[name="height"]').value=''
+        form.querySelector('input[name="weight"]').value=''
+    }
+
+    function getMemberFromRow(rowElement){
+        var car ={}
+        member.id  = rowElement.getAttribute('id')
+        member.name = rowElement.cells[1].firstChild.textContent
+        member.sex = rowElement.cells[2].firstChild.textContent
+        member.age = rowElement.cells[3].firstChild.textContent
+        member.height = rowElement.cells[4].firstChild.textContent
+        member.weight = parseInt(rowElement.cells[5].firstChild.textContent,10)
+        return book
+    }
+
+    function setMemberInRow(rowElement, member){
+        rowElement.cells[0].firstChild.textContent= member.id  
+        rowElement.cells[1].firstChild.textContent= member.name 
+        rowElement.cells[2].firstChild.textContent= member.sex
+        rowElement.cells[3].firstChild.textContent= member.age
+        rowElement.cells[4].firstChild.textContent= member.height
+        rowElement.cells[5].firstChild.textContent= member.weight
+    }
+
+    function populateFormWithMember(member){
+        var form = document.getElementById('createUpdateForm')
+        form.querySelector('input[name="id"]').disabled = true
+
+        form.querySelector('input[name="id"]').value  = member.id
+        form.querySelector('input[name="name"]').value= member.name
+        form.querySelector('input[name="sex"]').value= member.sex
+        form.querySelector('input[name="age"]').value= member.age
+        form.querySelector('input[name="height"]').value= member.height
+        form.querySelector('input[name="weight"]').value= member.weight
+        return member
+    }
+
+    function getMemberFromForm(){
+        var form = document.getElementById('createUpdateForm')
+        var member = {}
+        member.id = form.querySelector('input[name="id"]').value
+        member.name = form.querySelector('input[name="name"]').value
+        member.sex = form.querySelector('input[name="sex"]').value
+        member.age = form.querySelector('input[name="age"]').value
+        member.height = form.querySelector('input[name="height"]').value
+        member.weight = form.querySelector('input[name="weight"]').value
+        console.log(JSON.stringify(member))
+        return member
+    }
+
+    function getAllAjax(){
+        $.ajax({
+            "url": "http://127.0.0.1:5000/gym",
+            "method":"GET",
+            "data":"",
+            "dataType": "JSON",
+            "success":function(result){
+                //console.log(result);
+                for (member of result){
+                    addBookToTable(member);
+                }
+                
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+    function createMemberAjax(member){
+        //var member = {"name":"Stephen Steveson", "sex":"male", "age":30, "height":176.8, "weight":82.2}
+        console.log(JSON.stringify(member));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/gym",
+            "method":"POST",
+            "data":JSON.stringify(member),
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                //console.log(result);
+                member.id = result.id   
+                addMemberToTable(member)
+                clearForm()
+                showViewAll()
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+    function updateMemberAjax(member){
+        ////var member = {"name":"Stephen Steveson", "sex":"male", "age":30, "height":176.8, "weight":87.2}
+        console.log(JSON.stringify(member));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/gym/"+encodeURI(member.id),
+            "method":"PUT",
+            "data":JSON.stringify(member),
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+               // console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+    function deleteMemberAjax(id){
+        
+        //console.log(JSON.stringify('deleting '+id));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/gym/"+encodeURI(id),
+            "method":"DELETE",
+            "data":"",
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                //console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+
+    getAllAjax();
+  
+
+    </script>
+</html>
