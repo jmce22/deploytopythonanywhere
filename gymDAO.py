@@ -1,8 +1,8 @@
 # Gym DAO
 
 import mysql.connector
-import config as cfg
-class gymDAO:
+import pa as cfg
+class GymDAO:
     connection=""
     cursor =''
     host=       ''
@@ -99,4 +99,4 @@ class gymDAO:
         return gym
 
         
-gymDAO = gymDAO()
+gymDAO = GymDAO()
