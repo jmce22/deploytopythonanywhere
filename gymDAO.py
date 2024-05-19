@@ -1,5 +1,6 @@
 # Gym DAO
 
+import pymysql
 import pymysql.cursors
 import pa as cfg
 class GymDAO:
