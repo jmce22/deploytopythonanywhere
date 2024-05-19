@@ -1,4 +1,4 @@
-<html>
+html>
     <head>
         <title> view members</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -125,7 +125,7 @@
     }
 
     function doUpdate(){
-        var mmeber = getBookFromForm();
+        var mmeber = getMemberFromForm();
         var rowElement = document.getElementById(member.id);
         updateMemberAjax(member);
         setMemberInRow(rowElement, member);
@@ -175,14 +175,14 @@
     }
 
     function getMemberFromRow(rowElement){
-        var car ={}
+        var member = {}
         member.id  = rowElement.getAttribute('id')
         member.name = rowElement.cells[1].firstChild.textContent
         member.sex = rowElement.cells[2].firstChild.textContent
         member.age = rowElement.cells[3].firstChild.textContent
         member.height = rowElement.cells[4].firstChild.textContent
         member.weight = parseInt(rowElement.cells[5].firstChild.textContent,10)
-        return book
+        return member
     }
 
     function setMemberInRow(rowElement, member){
@@ -222,19 +222,19 @@
 
     function getAllAjax(){
         $.ajax({
-            "url": "/gym",
-            "method":"GET",
-            "data":"",
-            "dataType": "JSON",
-            "success":function(result){
+             url: "http://127.0.0.1:5000/gym",
+             method: "GET",
+             data: "",
+             dataType: "JSON",
+             success: function(result){
                 //console.log(result);
                 for (member of result){
-                    addBookToTable(member);
+                    addMemberToTable(member);
                 }
                 
             },
-            "error":function(xhr,status,error){
-                console.log("error: "+status+" msg:"+error);
+            "error":function(xhr, status, error) {
+                console.log("error: "+ status +" msg:"+ error);
             }
         });
     }
@@ -243,34 +243,35 @@
         //var member = {"name":"Stephen Steveson", "sex":"male", "age":30, "height":176.8, "weight":82.2}
         console.log(JSON.stringify(member));
         $.ajax({
-            "url": "/gym",
-            "method":"POST",
-            "data":JSON.stringify(member),
-            "dataType": "JSON",
+             url: "http://127.0.0.1:5000/gym",
+             method: "POST",
+             data: JSON.stringify(member),
+             dataType: "JSON",
             contentType: "application/json; charset=utf-8",
-            "success":function(result){
+             success: function(result){
                 //console.log(result);
                 member.id = result.id   
                 addMemberToTable(member)
                 clearForm()
                 showViewAll()
+
             },
-            "error":function(xhr,status,error){
-                console.log("error: "+status+" msg:"+error);
+            "error": function (xhr,status,error) {
+                console.log("error: "+ status + " msg:" + error);
             }
         });
     }
 
     function updateMemberAjax(member){
-        ////var member = {"name":"Stephen Steveson", "sex":"male", "age":30, "height":176.8, "weight":87.2}
+        //var member = {"name":"Stephen Steveson", "sex":"male", "age":30, "height":176.8, "weight":87.2}
         console.log(JSON.stringify(member));
         $.ajax({
-            "url": "/gym/"+encodeURI(member.id),
+            "url": "http://127.0.0.1:5000/gym/"+ encodeURI(member.id),
             "method":"PUT",
             "data":JSON.stringify(member),
             "dataType": "JSON",
             contentType: "application/json; charset=utf-8",
-            "success":function(result){
+            "success": function (result) {
                // console.log(result);
                   
             },
@@ -284,7 +285,7 @@
         
         //console.log(JSON.stringify('deleting '+id));
         $.ajax({
-            "url": "/gym/"+encodeURI(id),
+            "url": "http://127.0.0.1:5000/gym/"+encodeURI(id),
             "method":"DELETE",
             "data":"",
             "dataType": "JSON",
@@ -299,8 +300,10 @@
         });
     }
 
-    getAllAjax();
+    $(document).ready(function () {
+            getAllAjax();
+        });
+    
   
-
     </script>
 </html>

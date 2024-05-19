@@ -1,6 +1,6 @@
 # flask server that links to a DAO
 
-from flask import Flask, request, jsonify, abort, render_template
+from flask import Flask, request, jsonify, abort
 from gymDAO import gymDAO
 
 app = Flask(__name__)
