@@ -1,6 +1,6 @@
 # Gym DAO
 
-import pymysql.cursors
+import mysql.connector
 import pa as cfg
 class GymDAO:
     connection=""
@@ -17,7 +17,7 @@ class GymDAO:
         self.database=   cfg.mysql['database']
 
     def getcursor(self): 
-        self.connection = pymysql.connect(
+        self.connection = mysql.connector.connect(
             host=       self.host,
             user=       self.user,
             password=   self.password,
