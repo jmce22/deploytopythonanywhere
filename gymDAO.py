@@ -1,7 +1,7 @@
 # Gym DAO
 
 import mysql.connector
-import config as cfg
+import pa as cfg
 class GymDAO:
     connection=""
     cursor =''
