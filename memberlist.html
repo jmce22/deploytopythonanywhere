@@ -289,7 +289,7 @@
         //var member = {"name":"Stephen Steveson", "sex":"male", "age":30, "height":176.8, "weight":87.2}
         console.log(JSON.stringify(member));
         $.ajax({
-            "url": "https://jmce24.pythonanywhere.com/gym"+ encodeURI(member.id),
+            "url": "https://jmce24.pythonanywhere.com/gym/"+ encodeURI(member.id),
             "method":"PUT",
             "data":JSON.stringify(member),
             "dataType": "JSON",
@@ -308,7 +308,7 @@
         
         //console.log(JSON.stringify('deleting '+id));
         $.ajax({
-            "url": "https://jmce24.pythonanywhere.com/gym"+ encodeURI(id),
+            "url": "https://jmce24.pythonanywhere.com/gym/"+ encodeURI(id),
             "method":"DELETE",
             "data":"",
             "dataType": "JSON",
@@ -327,6 +327,5 @@
             getAllAjax();
         });
     
-  
     </script>
 </html>
