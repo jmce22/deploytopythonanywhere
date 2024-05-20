@@ -222,18 +222,18 @@ html>
 
     function getAllAjax(){
         $.ajax({
-             url: "http://127.0.0.1:5000/gym",
-             method: "GET",
-             data: "",
-             dataType: "JSON",
-             success: function(result){
+            url: "https://jmce24.pythonanywhere.com/gym",
+            method: "GET",
+            data: "",
+            dataType: "JSON",
+            success: function(result){
                 //console.log(result);
                 for (member of result){
                     addMemberToTable(member);
                 }
                 
             },
-            "error":function(xhr, status, error) {
+            error:function(xhr, status, error) {
                 console.log("error: "+ status +" msg:"+ error);
             }
         });
@@ -243,12 +243,12 @@ html>
         //var member = {"name":"Stephen Steveson", "sex":"male", "age":30, "height":176.8, "weight":82.2}
         console.log(JSON.stringify(member));
         $.ajax({
-             url: "http://127.0.0.1:5000/gym",
-             method: "POST",
-             data: JSON.stringify(member),
-             dataType: "JSON",
+            url: "https://jmce24.pythonanywhere.com/gym",
+            method: "POST",
+            data: JSON.stringify(member),
+            dataType: "JSON",
             contentType: "application/json; charset=utf-8",
-             success: function(result){
+            success: function(result){
                 //console.log(result);
                 member.id = result.id   
                 addMemberToTable(member)
@@ -256,7 +256,7 @@ html>
                 showViewAll()
 
             },
-            "error": function (xhr,status,error) {
+            error: function (xhr,status,error) {
                 console.log("error: "+ status + " msg:" + error);
             }
         });
@@ -266,16 +266,16 @@ html>
         //var member = {"name":"Stephen Steveson", "sex":"male", "age":30, "height":176.8, "weight":87.2}
         console.log(JSON.stringify(member));
         $.ajax({
-            "url": "http://127.0.0.1:5000/gym/"+ encodeURI(member.id),
-            "method":"PUT",
-            "data":JSON.stringify(member),
-            "dataType": "JSON",
+            url: "https://jmce24.pythonanywhere.com/gym"+ encodeURI(member.id),
+            method: "PUT",
+            data: JSON.stringify(member),
+            dataType: "JSON",
             contentType: "application/json; charset=utf-8",
-            "success": function (result) {
+            success: function (result) {
                // console.log(result);
                   
             },
-            "error":function(xhr,status,error){
+            error: function(xhr,status,error){
                 console.log("error: "+status+" msg:"+error);
             }
         });
@@ -285,16 +285,16 @@ html>
         
         //console.log(JSON.stringify('deleting '+id));
         $.ajax({
-            "url": "http://127.0.0.1:5000/gym/"+encodeURI(id),
-            "method":"DELETE",
-            "data":"",
-            "dataType": "JSON",
+            url: "https://jmce24.pythonanywhere.com/gym"+encodeURI(id),
+            method: "DELETE",
+            data: "",
+            dataType: "JSON",
             contentType: "application/json; charset=utf-8",
-            "success":function(result){
+            success: function(result){
                 //console.log(result);
                   
             },
-            "error":function(xhr,status,error){
+            error: function(xhr,status,error){
                 console.log("error: "+status+" msg:"+error);
             }
         });
