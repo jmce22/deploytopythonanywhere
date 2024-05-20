@@ -16,7 +16,7 @@
 
             input[type=submit] {
                 width: 10%;
-                background-color: #4CAF50;
+                background-color: #54af4c;
                 color: white;
                 padding: 14px 20px;
                 margin: 8px 0;
@@ -26,7 +26,7 @@
             }
     
             input[type=submit]:hover {
-                background-color: #4CAF50;
+                background-color: #47c1e6;
             }
             
             div.form-container {
@@ -43,7 +43,7 @@
                 <button id="showCreateButton" onclick="showCreate()">Create</button>
                 <button id="showUpdateButton" onclick="showUpdate()">Update</button>
                 <button id="showDeleteButton" onclick="doDelete(this)">Delete</button>
-                <table class="table table-bordered"" id="memberTable">
+                <table class="table table-bordered" id="memberTable">
                     <thead>
                         <tr>
                             <th>id</th>
@@ -94,7 +94,6 @@
 
                     <button id="doCreateButton" onclick="doCreate(this)">Create</button>
                     <button id="doUpdateButton" onclick="doUpdate(this)">Update</button>
-                    <button id="showDeleteButton" onclick="doDelete(this)">Delete</button>
         </div>
     </body>
 
@@ -150,7 +149,7 @@
     }
 
     function doUpdate(){
-        var mmeber = getMemberFromForm();
+        var member = getMemberFromForm();
         var rowElement = document.getElementById(member.id);
         updateMemberAjax(member);
         setMemberInRow(rowElement, member);
@@ -159,9 +158,9 @@
         showViewAll();
     }
 
-    function doDelete(r){
+    function doDelete(buttonElement){
         var tableElement = document.getElementById('memberTable');
-        var rowElement = r.parentNode.parentNode;
+        var rowElement = buttonElement.parentNode.parentNode;
         var index = rowElement.rowIndex;
         deleteMemberAjax(rowElement.getAttribute("id"));
         tableElement.deleteRow(index);
@@ -327,5 +326,6 @@
             getAllAjax();
         });
     
+  
     </script>
 </html>

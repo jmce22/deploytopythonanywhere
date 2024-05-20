@@ -1,7 +1,7 @@
 # Gym DAO
 
 import mysql.connector
-import pa as cfg
+import config as cfg
 class GymDAO:
     connection=""
     cursor =''
@@ -36,9 +36,7 @@ class GymDAO:
         cursor.execute(sql)
         results = cursor.fetchall()
         returnArray = []
-        #print(results)
         for result in results:
-            #print(result)
             returnArray.append(self.convertToDictionary(result))
         
         self.closeAll()
@@ -86,15 +84,14 @@ class GymDAO:
         self.connection.commit()
         self.closeAll()
         
-        # print("delete done")
         return True
 
     def convertToDictionary(self, resultLine):
-        attkeys=['id','name','sex', 'age', 'height', 'weight']
+        attrkeys=['id','name','sex', 'age', 'height', 'weight']
         gym = {}
         currentkey = 0
         for attrib in resultLine:
-            gym[attkeys[currentkey]] = attrib
+            gym[attrkeys[currentkey]] = attrib
             currentkey = currentkey + 1 
         return gym
 
